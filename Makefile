@@ -21,7 +21,6 @@ monitor:
 
 openwrt-x86_64:
 	mkdir -p $(BUILD_DIR)/openwrt-x86_64
-	GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -trimpath -ldflags="-s -w" -o $(BUILD_DIR)/openwrt-x86_64/$(APP_NAME) ./cmd/server
 	GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -trimpath -ldflags="-s -w" -o $(BUILD_DIR)/openwrt-x86_64/$(AGENT_NAME) ./cmd/agent
 	@echo "Build C monitor with OpenWrt SDK/toolchain, see README.md"
 
