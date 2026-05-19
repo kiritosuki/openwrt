@@ -1,0 +1,25 @@
+# Build outputs
+build/
+
+# Go local cache
+.gocache/
+
+# Runtime logs and temporary output
+*.log
+*.pid
+*.tmp
+traffic_stats.json
+
+# macOS
+.DS_Store
+._*
+
+# Windows
+Thumbs.db
+Desktop.ini
+
+# Editors
+.idea/
+.vscode/
+*.swp
+*.swo

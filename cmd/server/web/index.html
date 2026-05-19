@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OpenWrt 网络实验控制台</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <h1>OpenWrt 网络实验控制台</h1>
+      <p>流量监控与防火墙规则配置</p>
+    </div>
+    <div class="status" id="status">连接中</div>
+  </header>
+
+  <nav class="tabs" aria-label="功能切换">
+    <button class="tab active" data-panel="traffic">流量监控</button>
+    <button class="tab" data-panel="firewall">防火墙配置</button>
+  </nav>
+
+  <main>
+    <section id="traffic" class="panel active">
+      <div class="toolbar">
+        <label>刷新间隔
+          <select id="refreshInterval">
+            <option value="1000">1 秒</option>
+            <option value="2000" selected>2 秒</option>
+            <option value="5000">5 秒</option>
+          </select>
+        </label>
+        <button id="refreshTraffic">刷新</button>
+      </div>
+      <div class="metrics">
+        <div><span id="flowCount">0</span><small>连接数</small></div>
+        <div><span id="totalBytes">0 B</span><small>累计流量</small></div>
+        <div><span id="peakRate">0 B/s</span><small>峰值速率</small></div>
+      </div>
+      <canvas id="trafficChart" width="900" height="260"></canvas>
+      <div class="tableWrap">
+        <table>
+          <thead>
+            <tr>
+              <th>源 IP</th>
+              <th>目的 IP</th>
+              <th>协议</th>
+              <th>包数</th>
+              <th>累计流量</th>
+              <th>当前速率</th>
+              <th>峰值</th>
+              <th>2s 平均</th>
+              <th>10s 平均</th>
+              <th>40s 平均</th>
+            </tr>
+          </thead>
+          <tbody id="trafficRows"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="firewall" class="panel">
+      <form id="ruleForm" class="ruleForm">
+        <label>协议
+          <select name="proto">
+            <option value="tcp">TCP</option>
+            <option value="udp">UDP</option>
+            <option value="icmp">ICMP</option>
+            <option value="all">ALL</option>
+          </select>
+        </label>
+        <label>源地址
+          <input name="src_ip" placeholder="192.168.1.100 或 192.168.1.0/24">
+        </label>
+        <label>目的地址
+          <input name="dest_ip" placeholder="8.8.8.8 或留空">
+        </label>
+        <label>端口
+          <input name="port" placeholder="80 或 8000-8080">
+        </label>
+        <label>动作
+          <select name="action">
+            <option value="accept">ACCEPT</option>
+            <option value="reject">REJECT</option>
+            <option value="drop">DROP</option>
+          </select>
+        </label>
+        <button type="submit">新增规则</button>
+      </form>
+
+      <div class="toolbar">
+        <button id="reloadRules">查看规则</button>
+        <button id="clearRules" class="danger">清空实验规则</button>
+      </div>
+
+      <div class="tableWrap">
+        <table>
+          <thead>
+            <tr>
+              <th>名称</th>
+              <th>协议</th>
+              <th>源地址</th>
+              <th>目的地址</th>
+              <th>端口</th>
+              <th>动作</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody id="ruleRows"></tbody>
+        </table>
+      </div>
+
+      <form id="verifyForm" class="verifyForm">
+        <label>验证主机
+          <input name="host" value="8.8.8.8">
+        </label>
+        <label>验证端口
+          <input name="port" value="53">
+        </label>
+        <button type="submit">连接验证</button>
+      </form>
+
+      <pre id="resultBox" class="resultBox"></pre>
+    </section>
+  </main>
+
+  <script src="/app.js"></script>
+</body>
+</html>
